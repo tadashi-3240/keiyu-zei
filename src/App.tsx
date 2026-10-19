@@ -114,33 +114,32 @@ export default function App() {
     <main className="mx-auto min-h-dvh w-full max-w-md px-4 pt-safe pb-safe">
       {screen === 'calc' ? (
         <>
-          <header className="pt-5">
-            <h1 className="text-4xl font-semibold tracking-tight">軽油税</h1>
+          <header className="flex items-center gap-3 pt-5">
+            <h1 className="shrink-0 text-4xl font-semibold tracking-tight">軽油税</h1>
+            <div className="flex gap-2">
+              <button
+                type="button"
+                className="ui h-12 rounded-2xl bg-surface px-4"
+                onClick={() => setScreen('settings')}
+              >
+                設定
+              </button>
+              <button
+                type="button"
+                className="ui h-12 rounded-2xl bg-surface px-4"
+                onClick={() => setScreen('history')}
+              >
+                履歴
+              </button>
+            </div>
           </header>
 
-          <div className="mt-4 grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              className="ui h-14 rounded-2xl bg-surface"
-              onClick={() => setScreen('settings')}
-            >
-              設定
-            </button>
-            <button
-              type="button"
-              className="ui h-14 rounded-2xl bg-surface"
-              onClick={() => setScreen('history')}
-            >
-              履歴
-            </button>
+          <div className="mt-4 space-y-2">
+            <Field id="price" label="税込単価" value={priceText} unit="円/ℓ" onChange={edit(setPriceText)} large compact />
+            <Field id="liters" label="数量" value={literText} unit="ℓ" onChange={edit(setLiterText)} large compact />
           </div>
 
-          <div className="mt-5 space-y-3">
-            <Field id="price" label="税込単価" value={priceText} unit="円/ℓ" onChange={edit(setPriceText)} large />
-            <Field id="liters" label="数量" value={literText} unit="ℓ" onChange={edit(setLiterText)} large />
-          </div>
-
-          <section className="mt-5" aria-live="polite">
+          <section className="mt-3" aria-live="polite">
             {breakdown ? (
               <Result breakdown={breakdown} />
             ) : (
@@ -218,15 +217,15 @@ export default function App() {
 
 function ScreenHeader({ title, onBack }: { title: string; onBack: () => void }) {
   return (
-    <header className="pt-5">
+    <header className="flex items-center justify-between gap-3 pt-5">
+      <h1 className="text-4xl font-semibold tracking-tight">{title}</h1>
       <button
         type="button"
-        className="ui inline-flex h-16 items-center rounded-2xl bg-fuel px-7 text-bg"
+        className="ui inline-flex h-14 shrink-0 items-center rounded-2xl bg-fuel px-5 text-bg"
         onClick={onBack}
       >
         戻る
       </button>
-      <h1 className="mt-4 text-4xl font-semibold tracking-tight">{title}</h1>
     </header>
   )
 }
@@ -338,6 +337,7 @@ function Field({
   onChange,
   large = false,
   matchResult = false,
+  compact = false,
 }: {
   id: string
   label: string
@@ -346,13 +346,14 @@ function Field({
   onChange: (value: string) => void
   large?: boolean
   matchResult?: boolean
+  compact?: boolean
 }) {
   return (
-    <div className="rounded-2xl bg-card px-4 py-4">
-      <label htmlFor={id} className="text-2xl text-muted">
+    <div className={`rounded-2xl bg-card px-4 ${compact ? 'flex items-center gap-3 py-1.5' : 'py-4'}`}>
+      <label htmlFor={id} className={`shrink-0 text-2xl text-muted ${compact ? '' : 'block'}`}>
         {label}
       </label>
-      <div className="mt-1 flex items-baseline gap-2">
+      <div className={`flex min-w-0 flex-1 items-baseline gap-2 ${compact ? '' : 'mt-1'}`}>
         <input
           id={id}
           {...numberInputProps}
