@@ -116,17 +116,17 @@ export default function App() {
         <>
           <header className="flex items-center gap-3 pt-5">
             <h1 className="shrink-0 text-4xl font-semibold tracking-tight">軽油税</h1>
-            <div className="flex gap-2">
+            <div className="ml-auto flex gap-2">
               <button
                 type="button"
-                className="ui h-12 rounded-2xl bg-surface px-4"
+                className="ui h-12 rounded-2xl bg-fuel px-4 text-bg"
                 onClick={() => setScreen('settings')}
               >
                 設定
               </button>
               <button
                 type="button"
-                className="ui h-12 rounded-2xl bg-surface px-4"
+                className="ui h-12 rounded-2xl bg-fuel px-4 text-bg"
                 onClick={() => setScreen('history')}
               >
                 履歴
