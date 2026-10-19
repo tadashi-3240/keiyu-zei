@@ -51,6 +51,12 @@ input {
   touch-action: manipulation;
 }
 
+button.ui {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
 input.num-lg {
   font-size: 1.875rem;
   font-weight: 600;

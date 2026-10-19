@@ -115,21 +115,20 @@ export default function App() {
       {screen === 'calc' ? (
         <>
           <header className="pt-5">
-            <h1 className="text-2xl font-semibold tracking-tight">軽油税</h1>
-            <p className="mt-1 text-sm text-muted">軽油税、消費税、本体価格</p>
+            <h1 className="text-4xl font-semibold tracking-tight">軽油税</h1>
           </header>
 
           <div className="mt-4 grid grid-cols-2 gap-2">
             <button
               type="button"
-              className="h-11 rounded-2xl bg-surface text-sm"
+              className="ui h-14 rounded-2xl bg-surface"
               onClick={() => setScreen('settings')}
             >
               設定
             </button>
             <button
               type="button"
-              className="h-11 rounded-2xl bg-surface text-sm"
+              className="ui h-14 rounded-2xl bg-surface"
               onClick={() => setScreen('history')}
             >
               履歴
@@ -145,7 +144,7 @@ export default function App() {
             {breakdown ? (
               <Result breakdown={breakdown} />
             ) : (
-              <div className="rounded-3xl bg-card px-5 py-8 text-sm text-muted">
+              <div className="rounded-3xl bg-card px-5 py-8 text-lg text-muted">
                 単価、数量、設定の税額を入力すると内訳を出します。
               </div>
             )}
@@ -182,7 +181,7 @@ export default function App() {
                   key={value}
                   type="button"
                   aria-pressed={selected}
-                  className={`h-11 rounded-2xl text-sm tabular-nums ${selected ? 'bg-fuel text-bg' : 'bg-surface text-ink'}`}
+                  className={`ui h-14 rounded-2xl tabular-nums ${selected ? 'bg-fuel text-bg' : 'bg-surface text-ink'}`}
                   onClick={() => {
                     if (String(value) === deliveryText) return
                     edit(setDeliveryText)(String(value))
@@ -220,10 +219,14 @@ export default function App() {
 function ScreenHeader({ title, onBack }: { title: string; onBack: () => void }) {
   return (
     <header className="pt-5">
-      <button type="button" className="text-sm text-muted" onClick={onBack}>
+      <button
+        type="button"
+        className="ui inline-flex h-16 items-center rounded-2xl bg-fuel px-7 text-bg"
+        onClick={onBack}
+      >
         戻る
       </button>
-      <h1 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h1>
+      <h1 className="mt-4 text-4xl font-semibold tracking-tight">{title}</h1>
     </header>
   )
 }
@@ -268,17 +271,17 @@ function Result({ breakdown }: { breakdown: DieselBreakdown }) {
           className={`flex items-center justify-between gap-4 rounded-3xl border-l-4 bg-card px-5 py-4 ${figure.accent}`}
         >
           <div className="min-w-0">
-            <h2 className="text-sm text-muted">{figure.label}</h2>
-            {figure.note ? <p className="mt-1 text-xs text-muted">{figure.note}</p> : null}
+            <h2 className="text-2xl text-muted">{figure.label}</h2>
+            {figure.note ? <p className="mt-1 text-xl text-muted">{figure.note}</p> : null}
           </div>
           <p className="shrink-0 text-right">
             <span className="text-4xl font-semibold tabular-nums tracking-tight">{formatNumber(figure.yen)}</span>
-            <span className="ml-1 text-base text-muted">円</span>
+            <span className="ml-1 text-2xl text-muted">円</span>
           </p>
         </article>
       ))}
       {breakdown.bodyYen < 0 ? (
-        <p className="text-sm text-danger">単価が税額を下回っているため、本体価格がマイナスです。</p>
+        <p className="text-lg text-danger">単価が税額を下回っているため、本体価格がマイナスです。</p>
       ) : null}
     </div>
   )
@@ -296,24 +299,25 @@ function HistoryList({
   return (
     <section className="mt-5">
       {history.length === 0 ? (
-        <p className="text-sm text-muted">計算すると、ここに残ります。</p>
+        <p className="text-lg text-muted">計算すると、ここに残ります。</p>
       ) : (
         <ul className="space-y-2">
           {history.map((entry) => (
             <li key={entry.id} className="relative rounded-2xl bg-card">
-              <button type="button" className="w-full px-4 py-3 pr-16 text-left" onClick={() => onOpen(entry)}>
-                <p className="text-sm">{formatHistoryDate(entry.month, entry.day)}</p>
-                <p className="mt-1 text-sm tabular-nums">
+              <button type="button" className="w-full px-4 py-4 pr-24 text-left" onClick={() => onOpen(entry)}>
+                <p className="text-2xl">{formatHistoryDate(entry.month, entry.day)}</p>
+                <p className="mt-1 text-2xl tabular-nums">
                   {formatQuantity(entry.pricePerLiter)}円/ℓ × {formatQuantity(entry.liters)}ℓ
                 </p>
-                <p className="mt-1 text-xs leading-relaxed text-muted tabular-nums">
-                  軽油税 {formatYen(entry.deliveryYen)} · 消費税 {formatYen(entry.consumptionYen)} · 本体価格{' '}
-                  {formatYen(entry.bodyYen)}
+                <p className="mt-1 text-xl leading-relaxed text-muted tabular-nums">
+                  軽油税 {formatYen(entry.deliveryYen)}
                 </p>
+                <p className="text-xl leading-relaxed text-muted tabular-nums">消費税 {formatYen(entry.consumptionYen)}</p>
+                <p className="text-xl leading-relaxed text-muted tabular-nums">本体価格 {formatYen(entry.bodyYen)}</p>
               </button>
               <button
                 type="button"
-                className="absolute top-3 right-3 text-xs text-muted"
+                className="ui absolute top-3 right-3 rounded-xl bg-surface px-4 py-2 text-ink"
                 onClick={() => onDelete(entry.id)}
               >
                 削除
@@ -344,8 +348,8 @@ function Field({
   matchResult?: boolean
 }) {
   return (
-    <div className="rounded-2xl bg-card px-4 py-3">
-      <label htmlFor={id} className="text-sm text-muted">
+    <div className="rounded-2xl bg-card px-4 py-4">
+      <label htmlFor={id} className="text-2xl text-muted">
         {label}
       </label>
       <div className="mt-1 flex items-baseline gap-2">
@@ -356,7 +360,7 @@ function Field({
           onChange={(event) => onChange(event.target.value)}
           className={`w-full bg-transparent text-right tabular-nums outline-none ${matchResult ? 'num-xl' : large ? 'num-lg' : ''}`}
         />
-        <span className="shrink-0 text-sm text-muted">{unit}</span>
+        <span className="shrink-0 text-2xl text-muted">{unit}</span>
       </div>
     </div>
   )
